@@ -21,7 +21,8 @@
     <script>
         var _this = this;
         var interval = null;
-        var startTime = null;
+        var lastTime = null;
+        var nowTime = 0;
         
         document.querySelector(".start").addEventListener("click",runInterval);
         document.querySelector(".stop").addEventListener("click", stopInterval);
@@ -29,10 +30,13 @@
         
         function runInterval() {
             //console.log("test");
-            _this.startTime = Date.now();
+            _this.lastTime = Date.now();
             
             _this.interval = setInterval(function() {
-                var nowTime = Date.now() - startTime;
+                //console.log({dateNow: Date.now(), startTime: lastTime});
+                _this.nowTime += Date.now() - lastTime;
+                lastTime = Date.now();
+                //console.log(_this.nowTime);
                 //console.log(nowTime);
                 
                 dateCount = new Date(nowTime);
@@ -63,7 +67,7 @@
 
         function resetInterval() {
             clearInterval(_this.interval);
-            _this.startTime = Date.now();
+            _this.nowTime = 0;
             document.querySelector(".clock").textContent = "00:00:00";
         }
     
