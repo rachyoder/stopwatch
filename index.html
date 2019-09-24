@@ -17,62 +17,28 @@
     <button class="stop" type="button">Stop</button>
     <br>
     <button class="reset" type="button">Reset</button>
+
     <script>
-        // var _this = this;
-        // var interval = null;
-        // var totalTimePassed = null;
-        // var startTimeMain = null;
-        // console.log(this);
+        var _this = this;
+        var interval = null;
+        var lastTime = null;
+        var nowTime = 0;
         
-        // document.querySelector('.start').onclick = function () {
-        //     //console.log(this);
-        //     var startTime = Date.now();
-        //     startTimeMain = startTime;
-        //     var self = this;
-        //     _this.interval = setInterval(function () {
-        //         //console.log(this);
-        //         var nowTime = Date.now() - startTime;
-        //         if(totalTimePassed != null){
-        //             nowTime += _this.totalTimePassed;
-        //             totalTimePassed = null;
-        //             _this.startTimeMain = null;
-        //         }
-        //         dateCount = new Date(nowTime);
-
-        //         hours = Math.round(dateCount / 1000 / 60 / 60);
-        //         minutes = dateCount.getMinutes();
-        //         seconds = dateCount.getSeconds();
-
-        //         function doubleDigit(number) {
-        //             if (number < 10) {
-        //                 return '0' + number;
-        //             } else {
-        //                 return number;
-        //             }
-        //         }
-        //         hours = doubleDigit(hours);
-        //         minutes = doubleDigit(minutes);
-        //         seconds = doubleDigit(seconds);
-        //         document.querySelector('.clock').textContent = hours + ":" + minutes + ":" + seconds;
-                
-        //     }, 1000);
-        // }
-        // document.querySelector('.stop').onclick = function() {
-        //     console.log(this);
-        //     totalTimePassed = Date.now() - startTimeMain;
-        //     clearInterval(interval);
-        // }
-        var startTime = Date.now();
-
         document.querySelector(".start").addEventListener("click",runInterval);
-
+        document.querySelector(".stop").addEventListener("click", stopInterval);
+        document.querySelector(".reset").addEventListener("click", resetInterval);
+        
         function runInterval() {
             //console.log("test");
-
-            var  interval = setInterval(function() {
-                var nowTime = Date.now() - startTime;
+            _this.lastTime = Date.now();
+            
+            _this.interval = setInterval(function() {
+                //console.log({dateNow: Date.now(), startTime: lastTime});
+                _this.nowTime += Date.now() - lastTime;
+                lastTime = Date.now();
+                //console.log(_this.nowTime);
                 //console.log(nowTime);
-
+                
                 dateCount = new Date(nowTime);
 
                 hours = Math.round(dateCount / 1000 / 60 /60);
@@ -93,6 +59,16 @@
 
                 document.querySelector(".clock").textContent = hours + ":" + minutes + ":" + seconds;
             }, 1000); 
+        }
+
+        function stopInterval() {
+            clearInterval(_this.interval);
+        }
+
+        function resetInterval() {
+            clearInterval(_this.interval);
+            _this.nowTime = 0;
+            document.querySelector(".clock").textContent = "00:00:00";
         }
     
     </script>
